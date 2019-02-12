@@ -74,7 +74,3 @@ module ActiveModelSerializers
 end
 
 ActiveModelSerializers::Jsonapi.install
-
-ActiveSupport.on_load(:action_controller) do
-  include ActiveModelSerializers::Jsonapi::ControllerSupport
-end

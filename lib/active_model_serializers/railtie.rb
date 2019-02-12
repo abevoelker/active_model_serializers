@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails/railtie'
-require 'action_controller'
-require 'action_controller/railtie'
-require 'action_controller/serialization'
 
 module ActiveModelSerializers
   class Railtie < Rails::Railtie
@@ -11,12 +8,6 @@ module ActiveModelSerializers
 
     config.to_prepare do
       ActiveModel::Serializer.serializers_cache.clear
-    end
-
-    initializer 'active_model_serializers.action_controller' do
-      ActiveSupport.on_load(:action_controller) do
-        include(::ActionController::Serialization)
-      end
     end
 
     initializer 'active_model_serializers.prepare_serialization_context' do
@@ -31,9 +22,6 @@ module ActiveModelSerializers
       ActiveModelSerializers.logger = Rails.configuration.action_controller.logger
       ActiveModelSerializers.config.perform_caching = Rails.configuration.action_controller.perform_caching
       # We want this hook to run after the config has been set, even if ActionController has already loaded.
-      ActiveSupport.on_load(:action_controller) do
-        ActiveModelSerializers.config.cache_store = ActionController::Base.cache_store
-      end
     end
 
     # :nocov:
